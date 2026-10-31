@@ -15,14 +15,17 @@ class DataFetcher:
         if df.empty:
             raise ValueError("No data fetched")
 
-        df = df.reset_index()
+        # ✅ Keep datetime as index (DO NOT reset)
+        df.index = pd.to_datetime(df.index)
+        df.index = df.index.tz_localize(None)
+
         df = df.rename(columns={
-            "Datetime": "datetime",
             "Open": "open",
             "High": "high",
             "Low": "low",
             "Close": "close",
             "Volume": "volume"
         })
+
 
         return df
